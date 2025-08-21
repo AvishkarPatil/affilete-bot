@@ -1,5 +1,5 @@
 pyrotgfork[fast]
-uvloop
+uvloop==0.19.0 
 python-decouple
 Flask
 gunicorn
