@@ -1,6 +1,5 @@
-pyrotgfork[fast]
+pyrogram[fast]
 uvloop==0.21.0 ; python_version < "3.13"
 python-decouple
 Flask
 gunicorn
-aiohttp
