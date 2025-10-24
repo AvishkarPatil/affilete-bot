@@ -5,9 +5,11 @@ A reliable Telegram bot that automatically forwards messages from source channel
 ## Features
 - Forward messages from multiple source channels to multiple destination channels
 - Preserves message formatting, captions, and reply markup
+- **Word filtering** with blacklist/whitelist support
+- **Custom footer** for forwarded messages
+- **Webhook support** for cloud deployment
 - Comprehensive error handling and logging
 - Configuration validation
-- Support for both single and multiple channel forwarding
 
 ## Setup
 
@@ -28,6 +30,8 @@ FROM_CHANNEL=-1001234567890 -1001234567891
 TO_CHANNEL=-1001234567892 -1001234567893
 ADD_FOOTER=True
 FOOTER_TEXT=📢 Forwarded by MyBot
+BLACKLIST_WORDS=spam,advertisement,scam
+WEBHOOK_URL=https://yourapp.herokuapp.com/webhook
 ```
 
 ### 4. Install Dependencies
@@ -36,8 +40,15 @@ pip install -r requirements.txt
 ```
 
 ### 5. Run the Bot
+
+**Local (Polling):**
 ```bash
 python bot.py
+```
+
+**Webhook (Deployment):**
+```bash
+python webhook.py
 ```
 
 ## Configuration
@@ -45,7 +56,10 @@ python bot.py
 - `TO_CHANNEL`: Destination channel IDs separated by spaces
 - `ADD_FOOTER`: Enable/disable custom footer (True/False)
 - `FOOTER_TEXT`: Custom text added to forwarded messages
-- Both channels support single or multiple IDs
+- `BLACKLIST_WORDS`: Comma-separated words to filter out
+- `WHITELIST_WORDS`: Comma-separated words that must be present
+- `WEBHOOK_URL`: For webhook deployment (optional)
+- `PORT`: Webhook server port (default: 8080)
 
 ## Getting Channel IDs
 1. Forward a message from the channel to [@userinfobot](https://t.me/userinfobot)

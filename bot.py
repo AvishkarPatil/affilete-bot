@@ -54,9 +54,13 @@ def add_footer_to_caption(original_caption):
 @client.on_message(filters.chat(Config.FROM_CHANNELS))
 async def forward_message(client, message):
     """Forward messages from source to destination channels"""
-    success_count = 0
+    # Check word filtering
+    message_text = message.text or message.caption or ""
+    if Config.should_filter_message(message_text):
+        logger.info("Message filtered due to blacklist/whitelist rules")
+        return
     
-    # Prepare caption with footer
+    success_count = 0
     new_caption = add_footer_to_caption(message.caption)
     
     for to_channel in Config.TO_CHANNELS:
@@ -78,4 +82,13 @@ async def forward_message(client, message):
 
 if __name__ == "__main__":
     logger.info("Starting Auto-Post Bot...")
-    client.run(start_bot())
+    
+    if Config.WEBHOOK_URL:
+        # Webhook mode for deployment
+        from pyrogram import idle
+        client.start()
+        logger.info(f"Bot running in webhook mode on {Config.WEBHOOK_URL}")
+        idle()
+    else:
+        # Polling mode for local development
+        client.run(start_bot())
